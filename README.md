@@ -487,6 +487,51 @@ prediction-only static commitment:
 
 ---
 
+# Validated GitHub Actions run
+
+GitHub Actions run `33155277405` completed successfully on Ubuntu 24.04 / CPython 3.12.14 with:
+
+```text
+NumPy          2.5.2
+scikit-learn   1.9.0
+```
+
+All 10 regression/exact-oracle tests passed.
+
+The CI smoke used `3` machines, `8` jobs per instance, `60` training instances, `12` held-out test instances, and a 60-tree ExtraTrees predictor.
+
+```text
+ML test RMSE                          6.437
+robust list-scheduling bound          1.666667
+exact-prediction LPT bound            1.222222
+```
+
+Held-out CI smoke:
+
+```text
+method                                  mean Cmax   mean/OPT   max/OPT
+Learning-augmented predicted LPT           92.833     1.0622     1.1333
+Prediction-only static partition           96.583     1.1021     1.3571
+Prediction-free fixed-order list           94.667     1.0858     1.2468
+Clairvoyant true LPT                       92.083     1.0523     1.1333
+```
+
+All four methods had feasibility rate `1.000`.
+
+Controlled CI error sweep:
+
+```text
+sigma   mean|log err|   mean eta   LA ratio   static ratio   fixed list   max LA
+0.00       0.0000         1.000      1.0361       1.0361       1.1459     1.1447
+0.25       0.2242         1.580      1.0503       1.1632       1.1459     1.0845
+0.80       0.6009         4.512      1.1267       1.2096       1.1459     1.2500
+1.20       0.9637        11.402      1.0935       1.4520       1.1459     1.1494
+```
+
+The maximum observed learning-augmented ratio remained well below the theoretical `1.666667` list-scheduling robustness bound at every CI sweep point. The static prediction-only comparator degraded much more strongly as prediction noise increased. These are runner-specific smoke results, not universal performance claims.
+
+---
+
 # Schedule feasibility audit
 
 Every result is checked for:
